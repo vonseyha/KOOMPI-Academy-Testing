@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
             constraints: BoxConstraints.expand(),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/Image_icon/background.jpg"),
+                    image: AssetImage("images/background.jpg"),
                     fit: BoxFit.cover
                 )
             ),
@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 30.0),
                       child: Image.asset(
-                        "assets/Image_icon/koompi_logos.png",
+                        "images/koompi_logos.png",
                         fit: BoxFit.contain,
                       ),
                     ),
