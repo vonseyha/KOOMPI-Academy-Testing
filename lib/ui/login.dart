@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:koompi_academy/ui/signup.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -7,6 +8,127 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  Widget _buildSignupBtn() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Signup()));
+        print('Register Button Pressed');
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: new Text(
+              "Don't have ann account?",
+              style:new TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Container(
+            child: new Text(
+              "\tSign Up",
+              style:new TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                color: Colors.amber,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _forgotPass() {
+    return GestureDetector(
+      onTap: () {
+        _displayDialog(context);
+        print("You are forgot password");
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: new Text(
+              "Forgot Password?",
+              style:new TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  //Alert Dailog Forgot Password
+
+  _displayDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            content: Container(
+                  height: 80.0,
+                  width: 310.0,
+                  child: Column(
+                    children: <Widget>[
+                       Container(
+                           child: new Text(
+                             "FORGOT PASSWORD",
+                             style: new TextStyle(
+                               fontSize: 20.0,
+                               fontFamily: 'sans-serif',
+                               color: Colors.indigo,
+                             ),
+                           )
+                       ),
+                      Container(
+                        margin: const EdgeInsets.only(top:8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: "Email",
+                            contentPadding: EdgeInsets.all(15.0),
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel',style: new TextStyle(fontSize: 13.0,color:Colors.white, fontFamily: 'sans-serif',),),
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('Submit',style: new TextStyle(fontSize: 13.0,color:Colors.white, fontFamily: 'sans-serif',),),
+                color: Colors.amber,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+
+          );
+        });
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -15,25 +137,19 @@ class _LoginState extends State<Login> {
 
     String _email;
     String _password;
+    bool _passhide = true;
 
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0,color:Colors.white);
 
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.cyan,
+      color: Colors.lightBlue,
       child: MaterialButton(
         splashColor: Colors.white,
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-//            _scaffoldKey.currentState.showSnackBar(
-//                new SnackBar(
-//                  content: new Text(
-//                      "Your email: $_email and Password: $_password"
-//                  ),
-//               )
-//            );
            print("Your email: $_email and Password: $_password");
           }
           print("Login Success!");
@@ -118,11 +234,19 @@ class _LoginState extends State<Login> {
                           ),
                           child: TextFormField(
                             style: style,
+                            obscureText: _passhide,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                               hintText: "Password",
                               fillColor: Colors.white,
                               prefixIcon: Icon(Icons.lock_outline,color: Colors.white70),
+                              suffixIcon: IconButton(
+                                  icon: _passhide ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
+                                  onPressed: (){
+                                    setState(() {
+                                      _passhide != _passhide;
+                                    });
+                                  }),
                               border:
                               OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -149,7 +273,7 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0,),
+                      padding: const EdgeInsets.only(top: 130.0,),
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -157,26 +281,8 @@ class _LoginState extends State<Login> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  child: new Text(
-                                    "Don't have ann account?",
-                                    style:new TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: new Text(
-                                    "\tSign Up",
-                                    style:new TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.0,
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                  child: _buildSignupBtn(),
+                                )
                               ],
                             ),
                           ),
@@ -184,14 +290,7 @@ class _LoginState extends State<Login> {
                             height: 5.0,
                           ),
                           Container(
-                            child: new Text(
-                              "Forgot Password?",
-                              style:new TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 14.0,
-                                color: Colors.white,
-                              ),
-                            ),
+                           child: _forgotPass(),
                           ),
                         ],
                       ),

@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
 
+import 'login.dart';
+
 class Signup extends StatefulWidget {
   @override
   _SignupState createState() => _SignupState();
 }
 
 class _SignupState extends State<Signup> {
+
+  Widget _buildLoginBtn() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+        print('Register Button Pressed');
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: new Text(
+              "Already have account?",
+              style:new TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Container(
+            child: new Text(
+              "\tLogin here",
+              style:new TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                color: Colors.amber,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -15,24 +53,19 @@ class _SignupState extends State<Signup> {
     String _password;
     String _username;
 
+    bool _isHidePassword = true;
+
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0,color:Colors.white);
 
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.cyan,
+      color: Colors.lightBlue,
       child: MaterialButton(
         splashColor: Colors.white,
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-//            _scaffoldKey.currentState.showSnackBar(
-//                new SnackBar(
-//                  content: new Text(
-//                      "Your email: $_email and Password: $_password"
-//                  ),
-//               )
-//            );
             print("Your name: $_username and Your email: $_email and Password: $_password");
           }
           print("Login Success!");
@@ -107,8 +140,8 @@ class _SignupState extends State<Signup> {
                           ),
                         )
                     ),
-
                     SizedBox(height: 20.0),
+
                     Container(
                         child: new Theme(
                           data: new ThemeData(
@@ -149,18 +182,32 @@ class _SignupState extends State<Signup> {
                           ),
                           child: TextFormField(
                             style: style,
+                            keyboardType: TextInputType.text,
+                            autofocus: false,
+                            initialValue: '',
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                               hintText: "Password",
                               fillColor: Colors.white,
                               prefixIcon: Icon(Icons.lock_outline,color: Colors.white70),
+                              suffixIcon: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    _isHidePassword != _isHidePassword;
+                                  });
+                                  print("Hello world");
+                                },
+                                child: Icon(
+                                  _isHidePassword ? Icons.visibility_off : Icons.visibility,
+                                ),
+                              ),
+                              isDense: true,
                               border:
                               OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
+                            obscureText: _isHidePassword,
                             validator: (val){
                               if (val.length == 0)
                                 return "Please enter password";
@@ -170,6 +217,7 @@ class _SignupState extends State<Signup> {
                                 return null;
                             },
                             onSaved: (val)=>_password=val,
+
                           ),
                         )
                     ),
@@ -181,36 +229,11 @@ class _SignupState extends State<Signup> {
                       height: 15.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0,),
+                      padding: const EdgeInsets.only(top: 100.0,),
                       child: Column(
                         children: <Widget>[
                           Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  child: new Text(
-                                    "Already have account?",
-                                    style:new TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: new Text(
-                                    "\tLogin here",
-                                    style:new TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.0,
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              child: _buildLoginBtn(),
                           ),
                         ],
                       ),
