@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:koompi_academy/ui/login.dart';
 import 'package:koompi_academy/ui/signup.dart';
+import 'package:koompi_academy/ui/splashscreen/splashsreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Signup(),
+      home: SplashScreen(),
     );
   }
 }
